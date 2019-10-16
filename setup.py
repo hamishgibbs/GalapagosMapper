@@ -1,7 +1,7 @@
 import setuptools
 
 setuptools.setup(
-    name='mapping',
+    name='Galapagos_Mapper',
     version ='0.0.1',
     author='Hamish Gibbs',
     description='Package for plotting data in the Galapagos Islands',
