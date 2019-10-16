@@ -1,11 +1,11 @@
 try:
  import geopandas as gpd
-except ImportError:
+except ImportError as error:
   print(error.__class__.__name__ + ': ' + error.message)
 
 try:
  import shapely
-except ImportError:
+except ImportError as error:
     print(error.__class__.__name__ + ': ' + error.message)
   
 import geopandas as gpd
