@@ -1,12 +1,12 @@
 try:
  import geopandas as gpd
 except ImportError:
-  !pip install geopandas
+  print(error.__class__.__name__ + ': ' + error.message)
 
 try:
  import shapely
 except ImportError:
-  !pip install shapely
+    print(error.__class__.__name__ + ': ' + error.message)
   
 import geopandas as gpd
 import matplotlib.pyplot as plt
