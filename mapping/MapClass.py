@@ -2,6 +2,17 @@
 Class for the map element
 '''
 class galapagos_map:
+  import matplotlib.pyplot as plt
+  global plt 
+  
+  import numpy as np
+  global np
+  
+  import pandas as pd
+  global pd
+  
+  import geopandas as gpd
+  global gpd
   
   from math import radians, degrees, sin, cos, asin, acos, sqrt
   global radians, degrees, sin, cos, asin, acos, sqrt
