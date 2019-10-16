@@ -276,8 +276,8 @@ class Bounding_Boxes:
 
     #Extract coordinates from Shapely Polygon bounding boxes
     else:
-      xmin = geometry.mapping(self.bboxes[island])['bbox'][0]
-      xmax = geometry.mapping(self.bboxes[island])['bbox'][2]
+      xmin = mapping(self.bboxes[island])['bbox'][0]
+      xmax = mapping(self.bboxes[island])['bbox'][2]
 
       zoom = (xmax - xmin) * z_factor
 
@@ -298,8 +298,8 @@ class Bounding_Boxes:
       return(ymin - zoom, ymax + zoom)
 
     else:
-      ymin = geometry.mapping(self.bboxes[island])['bbox'][1]
-      ymax = geometry.mapping(self.bboxes[island])['bbox'][3]
+      ymin = mapping(self.bboxes[island])['bbox'][1]
+      ymax = mapping(self.bboxes[island])['bbox'][3]
 
       zoom = (ymax - ymin) * z_factor
 
