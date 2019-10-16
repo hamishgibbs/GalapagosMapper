@@ -10,7 +10,7 @@ except ImportError as error:
   
 import geopandas as gpd
 import matplotlib.pyplot as plt
-import shapely
+from shapely import geometry
 from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 from math import radians, degrees, sin, cos, asin, acos, sqrt
