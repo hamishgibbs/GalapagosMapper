@@ -234,8 +234,8 @@ class galapagos_map:
 Internal class to define bounding boxes around each island
 '''
 class Bounding_Boxes:
-  from shapely.geometry import mapping
-  global mapping
+  #from shapely.geometry import mapping
+  #global mapping
   
   #Instantiate Bounding_Boxes class using vector data - this class is written specifically to accept volcano specific data
   def __init__(self, vector_data):
