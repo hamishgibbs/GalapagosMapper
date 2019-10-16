@@ -1,12 +1,12 @@
 try:
  import geopandas as gpd
 except ImportError as error:
-  print(error.__class__.__name__ + ': Missing package geopandas')
+  print(error.__class__.__name__ + ': Please import geopandas package')
 
 try:
  import shapely
 except ImportError as error:
-  print(error.__class__.__name__ + ': Missing package shapely')
+  print(error.__class__.__name__ + ': Please import shapely package')
   
 import geopandas as gpd
 import matplotlib.pyplot as plt
