@@ -3,6 +3,8 @@ Class for the map element
 '''
 class galapagos_map:
   
+  from shapely.geometry import mapping
+  
   #Create bounding boxes when ititiating the function
   def __init__(self, volcano_dataset, island_to_plot='Archipelago', fig_size='large'):
     self.volcanoes = volcano_dataset
