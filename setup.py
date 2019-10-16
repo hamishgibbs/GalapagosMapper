@@ -8,8 +8,6 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://github.com/hamishgibbs/Galapagos_Mapper',
     packages=setuptools.find_packages(),
-    #packages=['mapping'],
-    #package_dir={'': 'C:/Users/bcollins/UHD_PY/uhd/host/build/python'},
     python_requires='>=3.6',
     zip_safe=False
     )
