@@ -15,5 +15,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import numpy as np
 from math import radians, degrees, sin, cos, asin, acos, sqrt
 
+global geometry
+
 name = 'Galapagos_Mapper'
 
