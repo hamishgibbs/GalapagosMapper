@@ -1,3 +1,13 @@
+try:
+ import geopandas as gpd
+except ImportError:
+  !pip install geopandas
+
+try:
+ import shapely
+except ImportError:
+  !pip install shapely
+  
 import geopandas as gpd
 import matplotlib.pyplot as plt
 from shapely.geometry import mapping, shape
