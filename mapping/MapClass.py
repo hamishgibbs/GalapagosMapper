@@ -3,6 +3,9 @@ Class for the map element
 '''
 class galapagos_map:
   
+  from math import radians, degrees, sin, cos, asin, acos, sqrt
+  global radians, degrees, sin, cos, asin, acos, sqrt
+  
   #Create bounding boxes when ititiating the function
   def __init__(self, volcano_dataset, island_to_plot='Archipelago', fig_size='large'):
     self.volcanoes = volcano_dataset
@@ -234,8 +237,8 @@ class galapagos_map:
 Internal class to define bounding boxes around each island
 '''
 class Bounding_Boxes:
-  #from shapely.geometry import mapping
-  #global mapping
+  from shapely.geometry import mapping
+  global mapping
   
   #Instantiate Bounding_Boxes class using vector data - this class is written specifically to accept volcano specific data
   def __init__(self, vector_data):
