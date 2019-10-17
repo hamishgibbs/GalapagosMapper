@@ -1,7 +1,7 @@
 '''
 Class for the map element
 '''
-class galapagos_map:
+class GalapagosMap:
   import matplotlib.pyplot as plt
   global plt 
   
@@ -13,17 +13,65 @@ class galapagos_map:
   
   import geopandas as gpd
   global gpd
+
+  import os
+  global os
   
   from math import radians, degrees, sin, cos, asin, acos, sqrt
   global radians, degrees, sin, cos, asin, acos, sqrt
   
-  #Create bounding boxes when ititiating the function
-  def __init__(self, volcano_dataset, island_to_plot='Archipelago', fig_size='large'):
-    self.volcanoes = volcano_dataset
+  #Create bounding boxes when ititiating the class
+#  def __init__(self, volcano_dataset, island_to_plot='Archipelago', fig_size='large'):
+  def __init__(self, island_to_plot='Archipelago', fig_size='large'):
+
+    bbox = {}
+
+    module_directory = os.path.dirname(os.path.abspath(__file__))
+    csv_path = module_directory +  '/bounding_box_geometry.csv'
+
+    with open(csv_path, 'r') as geometry_csv:
+      csv_reader = csv.reader(geometry_csv, delimiter=',')
+      next(csv_reader, None)
+      for row in csv_reader:
+        bbox[row[0]] = np.array([float(row[1]), float(row[2]), float(row[3]), float(row[4])]) 
+
+    self.bounding_boxes = bbox
+    
+    #self.volcanoes = volcano_dataset
     self.island_to_plot = island_to_plot
-    self.bounding_boxes = Bounding_Boxes(self.volcanoes)
-    self.volcano_names = self.bounding_boxes.volcano_names
+    #self.bounding_boxes = Bounding_Boxes(self.volcanoes)
+    #self.volcano_names = self.bounding_boxes.volcano_names
+    self.volcano_names = bbox.keys()
     self.fig_size = fig_size
+
+  #Add x_lim_island and y_lim_island here (remove Bounding_Box Class)
+  #Define a method to create matplotlib compatible xlim
+  def x_lim_island(self, zoom_factor=0.15):
+    
+    #Define the factor by which to zoom out x axis (this could be made into two zooms L & R)
+    #z_factor = 0.15 means that 15% of the total boundign box will be added to both sides
+    #This scales with the size of the island to add a border to all plots
+    z_factor = zoom_factor
+
+            
+    xmin = self.bounding_boxes[self.island_to_plot][0]
+    xmax = self.bounding_boxes[self.island_to_plot][2]
+
+    zoom = (xmax - xmin) * z_factor
+
+    return(xmin - zoom, xmax + zoom)
+
+  #Copy of x_lim_island for the y axis
+  def y_lim_island(self, zoom_factor=0.15):
+
+    z_factor = zoom_factor
+
+    ymin = self.bounding_boxes[self.island_to_plot][1]
+    ymax = self.bounding_boxes[self.island_to_plot][3]
+
+    zoom = (ymax - ymin) * z_factor
+
+    return(ymin - zoom, ymax + zoom)
   
   #Plot a basemap with the correct axes, north arrow and scale bar
   def base_map(self):
@@ -44,10 +92,10 @@ class galapagos_map:
                            'small' : 8,
                           }
     
-    x_diff = self.bounding_boxes.x_lim_island(self.island_to_plot)[1] - self.bounding_boxes.x_lim_island(self.island_to_plot)[0]
-    arrow_x = self.bounding_boxes.x_lim_island(self.island_to_plot)[1] - (x_diff * arrow_buffer)
-    y_diff = self.bounding_boxes.y_lim_island(self.island_to_plot)[1] - self.bounding_boxes.y_lim_island(self.island_to_plot)[0]
-    arrow_y = self.bounding_boxes.y_lim_island(self.island_to_plot)[1] - (y_diff * arrow_buffer)
+    x_diff = self.x_lim_island()[1] - self.x_lim_island()[0]
+    arrow_x = self.x_lim_island()[1] - (x_diff * arrow_buffer)
+    y_diff = self.y_lim_island()[1] - self.y_lim_island()[0]
+    arrow_y = self.y_lim_island()[1] - (y_diff * arrow_buffer)
     
     
     #SCALE BAR CACULATIONS
@@ -90,7 +138,7 @@ class galapagos_map:
                                 right_map_point[0], right_map_point[1])
 
       #Determine the right x coordinate of the scale bar
-      scale_R_coord = self.bounding_boxes.x_lim_island(self.island_to_plot)[1] - scale_x_buffer
+      scale_R_coord = self.x_lim_island()[1] - scale_x_buffer
 
       #Make the scale bar approximately 1/5th of image by default
       scale_bar_image_fraction = 0.2
@@ -168,10 +216,10 @@ class galapagos_map:
                 )
     
     #Plot scale bar
-    sb_coordinates = scale_bar_coordinates(self.bounding_boxes.x_lim_island(self.island_to_plot)[0], 
-                                           self.bounding_boxes.y_lim_island(self.island_to_plot)[0], 
-                                           self.bounding_boxes.x_lim_island(self.island_to_plot)[1],
-                                           self.bounding_boxes.y_lim_island(self.island_to_plot)[1]
+    sb_coordinates = scale_bar_coordinates(self.x_lim_island()[0], 
+                                           self.y_lim_island()[0], 
+                                           self.x_lim_island()[1],
+                                           self.y_lim_island()[1]
                                           )
     
     scale_L_coord = sb_coordinates['scale_L_coord']
@@ -192,8 +240,8 @@ class galapagos_map:
     self.ax.text(scale_R_coord, text_y_coordinate, str(closest_scale_bar_label) + ' km', ha='left')
     
     #Zoom into desired island
-    self.ax.set_xlim(self.bounding_boxes.x_lim_island(self.island_to_plot))
-    self.ax.set_ylim(self.bounding_boxes.y_lim_island(self.island_to_plot))
+    self.ax.set_xlim(self.x_lim_island())
+    self.ax.set_ylim(self.y_lim_island())
     
     #Remove axis labels
     self.ax.axes.get_xaxis().set_ticklabels([])
@@ -224,25 +272,18 @@ class galapagos_map:
                             'small' : 30,
                            }
     
-    x_diff = self.bounding_boxes.x_lim_island(self.island_to_plot)[1] - self.bounding_boxes.x_lim_island(self.island_to_plot)[0]
-    y_diff = self.bounding_boxes.y_lim_island(self.island_to_plot)[1] - self.bounding_boxes.y_lim_island(self.island_to_plot)[0]
+    x_diff = self.x_lim_island()[1] - self.x_lim_island()[0]
+    y_diff = self.y_lim_island()[1] - self.y_lim_island()[0]
     
     text_x_buffer = x_diff / text_buffer_fraction[self.fig_size]
     text_y_buffer = y_diff / text_buffer_fraction[self.fig_size]
     
-    self.ax.text(x=self.bounding_boxes.x_lim_island(self.island_to_plot)[0] + text_x_buffer,
-        y=self.bounding_boxes.y_lim_island(self.island_to_plot)[0] + text_y_buffer,
+    self.ax.text(x=self.x_lim_island()[0] + text_x_buffer,
+        y=self.y_lim_island()[0] + text_y_buffer,
         s=attribution_text, **kwargs)
   
   def add_grid(self, **kwargs):
     self.ax.grid(True, **kwargs)
-    
-  #For use mapping relatively flat islands (changing the cutoff of a color map)
-  def truncate_colormap(self, cmap, minval=0.0, maxval=1.0, n=100):
-    new_cmap = LinearSegmentedColormap.from_list(
-        'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
-        cmap(np.linspace(minval, maxval, n)))
-    return new_cmap
   
 '''
 Internal class to define bounding boxes around each island
@@ -250,10 +291,26 @@ Internal class to define bounding boxes around each island
 class Bounding_Boxes:
   from shapely.geometry import mapping
   global mapping
-  
-  #Instantiate Bounding_Boxes class using vector data - this class is written specifically to accept volcano specific data
-  def __init__(self, vector_data):
 
+  import csv
+  global csv
+'''  
+  #Instantiate Bounding_Boxes class using vector data - this class is written specifically to accept volcano specific data
+#  def __init__(self, vector_data):
+  def __init__(self):
+
+    #Add a relative path pointing to the correct csv file
+    #Create a dict from each record, this will be self.bboxes
+    bbox = {}
+    
+    geometry_csv = open('./bounding_box_geometry.csv', 'rb')
+    
+    csv_reader = csv.reader(geometry_csv, delimiter=',')
+    for row in csv_reader:
+      bbox[row[0]] = row[1]
+
+    geometry_csv.close()
+     
     #Add vector_data attribute to inspect original vector data
     self.vector_data = vector_data
 
@@ -266,12 +323,16 @@ class Bounding_Boxes:
 
     for island in list(vector_data.Name.unique()):
       bbox[island] = vector_data[vector_data['Name']==island].envelope
+    
+    
     self.bboxes = bbox
 
     #Add volcano_names class to inspect all unique volcano names (useful for plotting)
     volcano_names = list(vector_data.Name.unique()) + ['Archipelago'] + ['Isabela']
+    
     self.volcano_names = volcano_names
-
+    
+    self.volcano_names = bbox.keys()
   #Define a method to create matplotlib compatible xlim
   def x_lim_island(self, island, zoom_factor=0.15):
 
@@ -320,3 +381,4 @@ class Bounding_Boxes:
       zoom = (ymax - ymin) * z_factor
 
       return(ymin - zoom, ymax + zoom) 
+'''
