@@ -6,7 +6,7 @@ except ImportError as error:
 try:
  import shapely
 except ImportError as error:
-  print(error.__class__.__name__ + ': Please import shapely package')
+  print(error.__class__.__name__ + ': Please import shapely package')    
   
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -18,5 +18,5 @@ from math import radians, degrees, sin, cos, asin, acos, sqrt
 global mapping
 global radians, degrees, sin, cos, asin, acos, sqrt
 
-name = 'Galapagos_Mapper'
+name = 'GalapagosMapper'
 
