@@ -7,7 +7,7 @@ Created on Thu Oct 17 11:58:48 2019
 """
 
 #For use mapping relatively flat islands (changing the cutoff of a color map)
-def truncate_colormap(self, cmap, minval=0.0, maxval=1.0, n=100):
+def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
   from matplotlib.colors import LinearSegmentedColormap
   global LinearSegmentedColormap
 
