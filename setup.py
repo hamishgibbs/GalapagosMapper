@@ -9,5 +9,11 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     include_package_data=True,
     python_requires='>=3.6',
+    install_requires=[
+        'matplotlib',
+        'numpy',
+        'geopandas',
+        'shapely'
+    ],
     zip_safe=False
     )
