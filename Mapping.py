@@ -1,6 +1,3 @@
-'''
-Class for the map element
-'''
 class GalapagosMap:
   import matplotlib.pyplot as plt
   global plt 
@@ -73,9 +70,9 @@ class GalapagosMap:
     return(ymin - zoom, ymax + zoom)
   
   #Plot a basemap with the correct axes, north arrow and scale bar
-  def base_map(self, island_to_plot='Archipelago', arrow_length_fraction=20, arrow_text_fraction=15, arrow_buffer_fraction=40, 
+  def base_map(self, island_to_plot='Archipelago', custom_ax=None, add_north_arrow=True, arrow_length_fraction=20, arrow_text_fraction=15, arrow_buffer_fraction=40, 
                scale_buffer_fraction=10, manual_scale_x=None, manual_scale_y=None):
-    
+        
     #CALCULATE BUFFERS
     self.island_to_plot = island_to_plot
     
@@ -181,21 +178,25 @@ class GalapagosMap:
     #item_buffer = x_diff * 0.1
          
     #Plot the base figure
-    self.fig, self.ax = plt.subplots()
-    
+    if custom_ax != None:
+      self.ax = custom_ax
+    else:
+      self.fig, self.ax = plt.subplots()
+      
     #Plot North Arrow
-    self.ax.annotate('', xy=(arrow_x, arrow_y), 
-                     xytext=(arrow_x, (arrow_y-(y_diff/arrow_length_fraction))), 
-                     arrowprops=dict(arrowstyle='simple', fc='k'), 
-                     clip_on=True
-                    )
+    if add_north_arrow:
+      self.ax.annotate('', xy=(arrow_x, arrow_y), 
+                       xytext=(arrow_x, (arrow_y-(y_diff/arrow_length_fraction))), 
+                       arrowprops=dict(arrowstyle='simple', fc='k'), 
+                       clip_on=True
+                      )
 
-    self.ax.text(x=arrow_x, 
-                 y=(arrow_y-(y_diff/arrow_text_fraction)), 
-                 s='N', 
-                 horizontalalignment='center'
-                )
-    
+      self.ax.text(x=arrow_x, 
+                   y=(arrow_y-(y_diff/arrow_text_fraction)), 
+                   s='N', 
+                   horizontalalignment='center'
+                  )
+
     #Plot scale bar
     sb_coordinates = scale_bar_coordinates()
     
@@ -212,13 +213,6 @@ class GalapagosMap:
     self.ax.plot(white2_x_coords, (scale_y_coord, scale_y_coord), color='w', linestyle='-', linewidth=2.5),
     self.ax.text(scale_L_coord, text_y_coordinate, '0', ha='center'),
     self.ax.text(scale_R_coord, text_y_coordinate, str(closest_scale_bar_label) + ' km', ha='left')
-
-    #Trying to place using pixel coordinates
-    bbox = self.ax.get_window_extent().transformed(self.fig.dpi_scale_trans.inverted())
-    width, height = bbox.width, bbox.height
-
-    width *= self.fig.dpi
-    height *= self.fig.dpi
 
     #Zoom into desired island
     self.ax.set_xlim(self.x_lim_island())
