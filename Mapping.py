@@ -1,27 +1,14 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import geopandas as gpd
+import os
+from shapely.geometry import mapping
+import csv
+from math import radians, degrees, sin, cos, asin, acos, sqrt
+
+
 class GalapagosMap:
-  import matplotlib.pyplot as plt
-  global plt 
-  
-  import numpy as np
-  global np
-  
-  import pandas as pd
-  global pd
-  
-  import geopandas as gpd
-  global gpd
-
-  import os
-  global os
-
-  from shapely.geometry import mapping
-  global mapping
-
-  import csv
-  global csv
-  
-  from math import radians, degrees, sin, cos, asin, acos, sqrt
-  global radians, degrees, sin, cos, asin, acos, sqrt
   
   def __init__(self):
 
