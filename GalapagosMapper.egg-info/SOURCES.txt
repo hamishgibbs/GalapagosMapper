@@ -1,8 +1,0 @@
-README.md
-setup.py
-GalapagosMapper.egg-info/PKG-INFO
-GalapagosMapper.egg-info/SOURCES.txt
-GalapagosMapper.egg-info/dependency_links.txt
-GalapagosMapper.egg-info/not-zip-safe
-GalapagosMapper.egg-info/requires.txt
-GalapagosMapper.egg-info/top_level.txt
