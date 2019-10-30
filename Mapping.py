@@ -1,15 +1,15 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
-import geopandas as gpd
-import os
-from shapely.geometry import mapping
-import csv
-from math import radians, degrees, sin, cos, asin, acos, sqrt
-
 
 class GalapagosMap:
-  
+
+  import matplotlib.pyplot as plt
+  import numpy as np
+  import pandas as pd
+  import geopandas as gpd
+  import os
+  from shapely.geometry import mapping
+  import csv
+  from math import radians, degrees, sin, cos, asin, acos, sqrt
+
   def __init__(self):
 
    #Create bounding boxes when ititiating the class
@@ -27,7 +27,6 @@ class GalapagosMap:
     self.bounding_boxes = bbox
     self.volcano_names = list(bbox.keys())
 
-  #Add x_lim_island and y_lim_island here (remove Bounding_Box Class)
   #Define a method to create matplotlib compatible xlim
   def x_lim_island(self, zoom_factor=0.15):
     
@@ -131,20 +130,12 @@ class GalapagosMap:
       #Determine the y coordinate for both the R and L corners of the scale bar
       scale_y_coord = self.y_lim_island()[0] + scale_y_buffer
 
-      '''
-      Add white lines to scale bar at 0.1 to 0.4, and 0.6 to 0.8
-      '''
-
       #Find the x coordinate of 6 points along the scale bar line
       sextiles = np.linspace(scale_L_coord, scale_R_coord, 6)
 
       #Define the x coordinates for the two white patches on the line
       white1_x_coords = (sextiles[1], sextiles[2])
       white2_x_coords = (sextiles[3], (sextiles[4]))
-
-      '''
-      Add text to the scale bar
-      '''
 
       #Define the height of the text (half of the distance between the scale bar and the plot frame)
       text_y_coordinate = scale_y_coord - (scale_y_buffer/2)
@@ -159,11 +150,7 @@ class GalapagosMap:
            'closest_scale_bar_label' : closest_scale_bar_label
           }
       )
-    
-    #x_diff = self.x_lim_island()[1] - self.x_lim_island()[0]
-        
-    #item_buffer = x_diff * 0.1
-         
+             
     #Plot the base figure
     if custom_ax != None:
       self.ax = custom_ax
@@ -205,11 +192,6 @@ class GalapagosMap:
     self.ax.set_xlim(self.x_lim_island())
     self.ax.set_ylim(self.y_lim_island())
     
-    #Remove axis labels and ticks
-    #self.ax.axes.get_xaxis().set_ticklabels([])
-    #self.ax.axes.get_yaxis().set_ticklabels([])
-    
-    #self.ax.axis('on')
     self.ax.xaxis.set_major_locator(plt.NullLocator())
     self.ax.yaxis.set_major_locator(plt.NullLocator())
 
@@ -220,7 +202,7 @@ class GalapagosMap:
                    extent=(raster_data.bounds[0], raster_data.bounds[2], raster_data.bounds[1], raster_data.bounds[3]),
                    **kwargs)
   
-  #Accepts point data in lat_lon coordinates
+  #Accepts point data in lat_lon coordinates and matplotlib **kwargs for plt.scatter()
   def add_xy_data(self, x_data, y_data, **kwargs):
     plt.scatter(x_data, y_data, **kwargs)
       
@@ -239,5 +221,5 @@ class GalapagosMap:
         y=self.y_lim_island()[0] + self.arrow_y_buffer,
         s=attribution_text, **kwargs)
   
-  def add_grid(self, **kwargs):
-    self.ax.grid(True, **kwargs)
+  def add_grid(self, grid=True, **kwargs):
+    self.ax.grid(grid, **kwargs)
